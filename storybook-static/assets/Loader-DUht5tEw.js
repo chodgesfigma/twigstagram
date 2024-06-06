@@ -1,0 +1,1 @@
+import{j as s}from"./jsx-runtime-CGpYA4L6.js";const e=()=>s.jsx("div",{className:"flex-center w-full",children:s.jsx("img",{src:"/assets/icons/loader.svg",alt:"loader",width:24,height:24})}),t=e;export{t as L};

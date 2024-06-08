@@ -6,7 +6,7 @@ export default create({
 
   // Base colors
   colorPrimary: '#007E4F', // Primary color
-  colorSecondary: '#5D5FEF', // Secondary color
+  colorSecondary: '#006B44', // Secondary color
 
   // UI
   appBg: '#000000', // Dark background
@@ -36,5 +36,5 @@ export default create({
   // Brand
   brandTitle: 'Twigstagram',
   brandUrl: 'https://yourcompanywebsite.com',
-  brandImage: 'https://i.ibb.co/K2T2FT4/name-logo.png', 
+  brandImage: 'assets/images/twigma.svg', // Ensure this path is correct relative to the public directory
 });

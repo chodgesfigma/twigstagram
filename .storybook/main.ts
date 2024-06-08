@@ -1,3 +1,4 @@
+import { mergeConfig } from 'vite';
 import type { StorybookConfig } from "@storybook/react-vite";
 
 const config: StorybookConfig = {
@@ -7,7 +8,8 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@storybook/addon-onboarding",
     "@storybook/addon-interactions",
-    "@storybook/addon-styling-webpack"
+    "@storybook/addon-styling-webpack",
+    "@storybook/addon-docs"
   ],
   framework: {
     name: "@storybook/react-vite",
@@ -17,7 +19,6 @@ const config: StorybookConfig = {
     builder: "@storybook/builder-vite",
   },
   async viteFinal(config) {
-    const { mergeConfig } = await import('vite');
     return mergeConfig(config, {
       optimizeDeps: {
         include: ['storybook-dark-mode'],

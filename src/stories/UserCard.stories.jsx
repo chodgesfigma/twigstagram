@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export default {
-  title: 'Twigstagram/shared/UserCard',
+  title: 'Twigstagram/msc/UserCard',
   component: UserCard,
   parameters: {
     layout: 'fullscreen',

@@ -1,0 +1,156 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Textarea } from '@/components/ui/textarea';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/ui/Textarea" 
+  component={Textarea} 
+  parameters={{ layout: 'centered' }}
+/>
+
+# Textarea Component
+
+The `Textarea` component is a versatile textarea element used in the Twigstagram application. It supports various states, including default and disabled.
+
+## Example
+
+Here are examples of how the `Textarea` component looks and functions:
+
+<Canvas>
+  <Story name="DefaultTextarea">
+    {() => <Textarea placeholder="Enter text here" />}
+  </Story>
+  <Story name="DisabledTextarea">
+    {() => <Textarea placeholder="Disabled textarea" disabled />}
+  </Story>
+</Canvas>
+
+## Usage
+
+To use the `Textarea` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import * as React from "react"
+
+import { cn } from "@/lib/utils"
+
+export interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <textarea
+        className={cn(
+          "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Textarea.displayName = "Textarea"
+
+export { Textarea }
+```
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `Textarea` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `Textarea`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `Textarea` looks balanced.
+- **Alignment:** Ensure that all elements within the `Textarea` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `Textarea` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `Textarea` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `Textarea` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the textarea elements to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `Textarea`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `Textarea` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `Textarea` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.flex {
+  @apply flex;
+}
+.min-h-\[80px\] {
+  @apply min-h-[80px];
+}
+.w-full {
+  @apply w-full;
+}
+.rounded-md {
+  @apply rounded-md;
+}
+.border {
+  @apply border;
+}
+.border-input {
+  @apply border-gray-300;
+}
+.bg-background {
+  @apply bg-white;
+}
+.px-3 {
+  @apply px-3;
+}
+.py-2 {
+  @apply py-2;
+}
+.text-sm {
+  @apply text-sm;
+}
+.ring-offset-background {
+  @apply ring-offset-white;
+}
+.placeholder\:text-muted-foreground {
+  @apply placeholder-gray-400;
+}
+.focus-visible\:outline-none {
+  @apply outline-none;
+}
+.focus-visible\:ring-2 {
+  @apply ring-2;
+}
+.focus-visible\:ring-ring {
+  @apply ring-blue-500;
+}
+.focus-visible\:ring-offset-2 {
+  @apply ring-offset-2;
+}
+.disabled\:cursor-not-allowed {
+  @apply cursor-not-allowed;
+}
+.disabled\:opacity-50 {
+  @apply opacity-50;
+}
+```

@@ -1,0 +1,180 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import GridPostList from '@/components/shared/GridPostList';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/GridPostList" 
+  component={GridPostList} 
+  parameters={{ layout: 'centered' }}
+/>
+
+# GridPostList Component
+
+The `GridPostList` component is used to display a list of posts in a grid format in the Twigstagram application. It allows for optional display of user information and post statistics.
+
+## Example
+
+Here is an example of how the `GridPostList` component looks and functions:
+
+<Canvas>
+  <Story name="single">
+    {() => (
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter>
+          <GridPostList 
+            posts={[
+              {
+                $id: '1',
+                imageUrl: 'https://images.unsplash.com/photo-1458966480358-a0ac42de0a7a?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                creator: {
+                  id: 'mockUserId',
+                  name: 'Mock User',
+                  imageUrl: '/assets/icons/profile-placeholder.svg',
+                },
+                $createdAt: '2023-05-15T12:34:56.789Z',
+                caption: 'This is an example caption for the post.',
+                location: 'Example Location',
+                tags: ['nature', 'travel', 'adventure'],
+                likes: [],
+                comments: [],
+              },
+              // Add more mock posts as needed
+            ]}
+            showUser={true}
+            showStats={true}
+          />
+        </MemoryRouter>
+      </QueryClientProvider>
+    )}
+  </Story>
+</Canvas>
+
+## Usage
+
+To use the `GridPostList` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import { Models } from "appwrite";
+import { Link } from "react-router-dom";
+
+import { useUserContext } from "@/context/AuthContext";
+import PostStats from "./PostStats";
+
+type GridPostListProps = {
+  posts: Models.Document[];
+  showUser?: boolean;
+  showStats?: boolean;
+};
+
+const GridPostList = ({
+  posts,
+  showUser = true,
+  showStats = true,
+}: GridPostListProps) => {
+  const { user } = useUserContext();
+
+  return (
+    <ul className="grid-container">
+      {posts.map((post) => (
+        <li key={post.$id} className="relative min-w-80 h-80">
+          <Link to={`/posts/${post.$id}`} className="grid-post_link">
+            <img
+              src={post.imageUrl}
+              alt="post"
+              className="h-full w-full object-cover"
+            />
+          </Link>
+
+          <div className="grid-post_user">
+            {showUser && (
+              <div className="flex items-center justify-start gap-2 flex-1">
+                <img
+                  src={
+                    post.creator.imageUrl ||
+                    "/assets/icons/profile-placeholder.svg"
+                  }
+                  alt="creator"
+                  className="w-8 h-8 rounded-full"
+                />
+                <p className="line-clamp-1">{post.creator.name}</p>
+              </div>
+            )}
+            {showStats && <PostStats post={post} userId={user.id} />}
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default GridPostList;
+```
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `GridPostList` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `GridPostList`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `GridPostList` looks balanced.
+- **Alignment:** Ensure that all elements within the `GridPostList` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `GridPostList` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `GridPostList` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `GridPostList` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the buttons and inputs to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `GridPostList`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `GridPostList` to cater to unique use cases without compromising the overall design integrity.
+
+
+### Example CSS
+
+Here is the CSS used for styling the `GridPostList` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.grid-container {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4;
+}
+.grid-post_link {
+  @apply block;
+}
+.grid-post_user {
+  @apply absolute bottom-0 left-0 w-full bg-opacity-50 bg-black p-2;
+}
+.min-w-80 {
+  @apply min-w-[20rem];
+}
+.h-80 {
+  @apply h-[20rem];
+}
+.line-clamp-1 {
+  @apply line-clamp-1;
+}
+
+```

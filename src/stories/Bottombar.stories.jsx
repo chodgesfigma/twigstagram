@@ -5,7 +5,7 @@ import { bottombarLinks } from "@/constants";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export default {
-    title: 'Twigstagram/shared/Bottombar',
+    title: 'Twigstagram/msc/Bottombar',
     component: Bottombar,
     parameters: {
       layout: 'fullscreen',

@@ -1,0 +1,207 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import PostStats from '@/components/shared/PostStats';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/PostStats" 
+  component={PostStats} 
+  parameters={{ layout: 'centered' }}
+/>
+
+# PostStats Component
+
+The `PostStats` component is used to display the statistics of a post in the Twigstagram application, including likes and saves. It allows users to like and save posts, updating the UI accordingly.
+
+## Example
+
+Here is an example of how the `PostStats` component looks and functions:
+
+<Canvas>
+  <Story name="Centered">
+    {() => (
+      <QueryClientProvider client={new QueryClient()}>
+        <PostStats post={{
+          $id: '1',
+          likes: [{ $id: 'mockUserId' }],
+          // Add more properties as needed
+        }} userId="mockUserId" />
+      </QueryClientProvider>
+    )}
+  </Story>
+</Canvas>
+
+## Usage
+
+To use the `PostStats` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import { useDeleteSavedPost, useGetCurrentUser, useLikePost, useSavePost } from "@/lib/react-query/queriesAndMutations";
+import { checkIsLiked } from "@/lib/utils";
+import { Models } from "appwrite";
+import React, { useState, useEffect } from "react";
+import Loader from "./Loader";
+
+type PostStatsProps = {
+    post?: Models.Document;
+    userId: string;
+}
+
+const PostStats = ({ post, userId }: PostStatsProps) => {
+    const likesList = post?.likes.map((user: Models.Document) => user.$id);
+
+    const [likes, setLikes] = useState(likesList);
+    const [isSaved, setIsSaved] = useState(false);
+
+    const { mutate: likePost } = useLikePost();
+    const { mutate: savePost, isPending: isSavingPost } = useSavePost();
+    const { mutate: deleteSavedPost, isPending: isDeletingSaved } = useDeleteSavedPost();
+
+    const { data: currentUser } = useGetCurrentUser();
+
+    useEffect(() => {
+        const savedPostRecord = currentUser?.save.find((record: Models.Document) => record.post.$id === post.$id);
+        setIsSaved(!!savedPostRecord);
+    }, [currentUser, post?.$id]);
+
+    const handleLikePost = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+        e.stopPropagation();
+
+        let newLikes = [...likes];
+        const hasLiked = newLikes.includes(userId);
+
+        if (hasLiked) {
+            newLikes = newLikes.filter((id) => id !== userId);
+        } else {
+            newLikes.push(userId);
+        }
+
+        setLikes(newLikes);
+        likePost({ postId: post?.$id || '', likesArray: newLikes });
+    };
+
+    const handleSavePost = (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+        e.stopPropagation();
+
+        const savedPostRecord = currentUser?.save.find((record: Models.Document) => record.post.$id === post.$id);
+
+        if (savedPostRecord) {
+            setIsSaved(false);
+            deleteSavedPost(savedPostRecord.$id);
+        } else {
+            savePost({ postId: post?.$id || '', userId });
+            setIsSaved(true);
+        }
+    };
+
+    return (
+        <div className="flex justify-between items-center z-20">
+            <div className="flex gap-2 mr-5">
+                <img
+                    src={checkIsLiked(likes, userId)
+                        ? "/assets/icons/liked.svg"
+                        : "/assets/icons/like.svg"
+                    }
+                    alt="like"
+                    width={20}
+                    height={20}
+                    onClick={handleLikePost}
+                    className="cursor-pointer"
+                />
+                <p className="small-medium lg:base-medium">{likes.length}</p>
+            </div>
+
+            <div className="flex gap-2">
+                {isSavingPost || isDeletingSaved ? <Loader /> :
+                <img
+                    src={isSaved
+                        ? "/assets/icons/saved.svg"
+                        : "/assets/icons/save.svg"
+                    }
+                    alt="save"
+                    width={20}
+                    height={20}
+                    onClick={handleSavePost}
+                    className="cursor-pointer"
+                />}
+            </div>
+        </div>
+    );
+};
+
+export default PostStats;
+```
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `PostStats` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `PostStats`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `PostStats` looks balanced.
+- **Alignment:** Ensure that all elements within the `PostStats` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `PostStats` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `PostStats` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `PostStats` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the buttons and inputs to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `PostStats`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `PostStats` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `PostStats` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.flex {
+  @apply flex;
+}
+.justify-between {
+  @apply justify-between;
+}
+.items-center {
+  @apply items-center;
+}
+.gap-2 {
+  @apply gap-2;
+}
+.mr-5 {
+  @apply mr-5;
+}
+.cursor-pointer {
+  @apply cursor-pointer;
+}
+.small-medium {
+  @apply text-sm font-medium;
+}
+.lg\:base-medium {
+  @apply lg:text-base lg:font-medium;
+}
+.z-20 {
+  @apply z-20;
+}
+```

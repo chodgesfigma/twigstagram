@@ -1,0 +1,167 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import ProfileUploader from '@/components/shared/ProfileUploader';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/ProfileUploader" 
+  component={ProfileUploader} 
+  parameters={{ layout: 'fullscreen' }}
+/>
+
+# ProfileUploader Component
+
+The `ProfileUploader` component is used to upload profile pictures in the Twigstagram application. It provides an intuitive drag-and-drop interface for users to upload and change their profile photos.
+
+## Example
+
+Here is an example of how the `ProfileUploader` component looks and functions:
+
+<Canvas>
+  <Story name="Default">
+    {() => (
+      <QueryClientProvider client={new QueryClient()}>
+        <ProfileUploader 
+          fieldChange={(files) => console.log('Field changed:', files)} 
+          mediaUrl="/assets/images/profile.png" 
+        />
+      </QueryClientProvider>
+    )}
+  </Story>
+</Canvas>
+
+## Usage
+
+To use the `ProfileUploader` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import { useCallback, useState } from "react";
+import { FileWithPath, useDropzone } from "react-dropzone";
+
+import { convertFileToUrl } from "@/lib/utils";
+
+type ProfileUploaderProps = {
+  fieldChange: (files: File[]) => void;
+  mediaUrl: string;
+};
+
+const ProfileUploader = ({ fieldChange, mediaUrl }: ProfileUploaderProps) => {
+  const [file, setFile] = useState<File[]>([]);
+  const [fileUrl, setFileUrl] = useState<string>(mediaUrl);
+
+  const onDrop = useCallback(
+    (acceptedFiles: FileWithPath[]) => {
+      setFile(acceptedFiles);
+      fieldChange(acceptedFiles);
+      setFileUrl(convertFileToUrl(acceptedFiles[0]));
+    },
+    [file]
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [".png", ".jpeg", ".jpg"],
+    },
+  });
+
+  return (
+    <div {...getRootProps()}>
+      <input {...getInputProps()} className="cursor-pointer" />
+
+      <div className="cursor-pointer flex-center gap-4">
+        <img
+          src={fileUrl || "/assets/icons/profile-placeholder.svg"}
+          alt="image"
+          className="h-24 w-24 rounded-full object-cover object-top"
+        />
+        <p className="text-primary-500 small-regular md:bbase-semibold">
+          Change profile photo
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default ProfileUploader;
+```
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `ProfileUploader` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `ProfileUploader`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `ProfileUploader` looks balanced.
+- **Alignment:** Ensure that all elements within the `ProfileUploader` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `ProfileUploader` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `ProfileUploader` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `ProfileUploader` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the buttons and inputs to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `ProfileUploader`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `ProfileUploader` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `ProfileUploader` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.cursor-pointer {
+  @apply cursor-pointer;
+}
+.flex-center {
+  @apply flex justify-center items-center;
+}
+.gap-4 {
+  @apply gap-4;
+}
+.h-24 {
+  @apply h-24;
+}
+.w-24 {
+  @apply w-24;
+}
+.rounded-full {
+  @apply rounded-full;
+}
+.object-cover {
+  @apply object-cover;
+}
+.object-top {
+  @apply object-top;
+}
+.text-primary-500 {
+  @apply text-primary-500;
+}
+.small-regular {
+  @apply text-sm;
+}
+.md\:base-semibold {
+  @apply md:text-base md:font-semibold;
+}
+```

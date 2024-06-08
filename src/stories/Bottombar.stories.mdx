@@ -1,0 +1,127 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import Bottombar from '@/components/shared/Bottombar';
+import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/Bottombar" 
+  component={Bottombar} 
+  parameters={{ layout: 'fullscreen' }}
+/>
+
+# Bottombar Component
+
+The `Bottombar` component is a shared component used in the Twigstagram application. It is designed to be displayed at the bottom of the screen and provides navigation links to various sections of the app.
+
+
+
+
+## Example
+
+Here is an example of how the `Bottombar` component looks and functions:
+
+<Canvas>
+  <Story name="Default">
+    {() => (
+      <div>
+        <style>{`
+          .bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            position: sticky;
+            bottom: 0;
+            background-color: #09090A; /* Update with your dark-2 color from Tailwind CSS */
+            padding: 1rem 2rem;
+          }
+        `}</style>
+        <QueryClientProvider client={new QueryClient()}>
+          <MemoryRouter>
+            <Bottombar />
+          </MemoryRouter>
+        </QueryClientProvider>
+      </div>
+    )}
+  </Story>
+</Canvas>
+
+
+## Usage
+
+To use the `Bottombar` component in your project, you need to wrap it with `QueryClientProvider` and `MemoryRouter`. Below is an example of how to include it in your application.
+
+```jsx
+import React from 'react';
+import Bottombar from '@/components/shared/Bottombar';
+import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <MemoryRouter>
+      <Bottombar />
+    </MemoryRouter>
+  </QueryClientProvider>
+);
+export default App;
+``` 
+
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+
+## Style Guidelines
+
+When implementing the `Bottombar` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `Bottombar`. This includes the background color, text color, and icon colors. Ensure that the colors match the overall theme of the application. For example, use `bg-dark-2` for the background color and `text-light-1` for text.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes such as `.base-medium` or `.small-semibold` for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values around the navigation items. Use utility classes like `px-5` and `py-4` for padding to ensure the `Bottombar` looks balanced and the items are not too close or too far apart.
+- **Alignment:** Ensure that all navigation items are properly aligned, both horizontally and vertically. Use flexbox properties such as `flex-between` and `items-center` to achieve consistent alignment.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `Bottombar` should be fully responsive and work well on various screen sizes, including mobile devices. Use utility classes like `md:hidden` to manage visibility and ensure touch targets are appropriately sized for easy interaction on touch screens.
+- **Viewport Width:** Make sure the `Bottombar` spans the entire width of the viewport and stays fixed at the bottom, regardless of the screen size. Use `w-full` and `sticky bottom-0` classes to achieve this.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `Bottombar` is accessible via keyboard navigation. Users should be able to navigate through the items using the Tab key.
+- **Aria Labels:** Use appropriate ARIA labels for the navigation items to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability. Ensure compliance with accessibility standards by using high-contrast color combinations like `text-light-1` on `bg-dark-2`.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements in the `Bottombar`. This provides visual feedback to users and enhances the overall user experience. Use classes like `hover:bg-primary-500` and `focus-visible:ring-1` to style these states.
+- **Active State:** Highlight the active or selected navigation item to indicate the current section of the application the user is in. Use a distinct style, such as `bg-primary-600`, to denote the active state.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `Bottombar`. Developers should be able to override default styles to match their application's branding. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `Bottombar` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `Bottombar` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.bottom-bar {
+  @apply z-50 flex-between w-full sticky bottom-0 rounded-t-[20px] bg-dark-2 px-5 py-4 md:hidden;
+}
+```
+
+
+
+
+

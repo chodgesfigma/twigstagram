@@ -1,0 +1,461 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import {
+  ToastProvider,
+  ToastViewport,
+  Toast,
+  ToastTitle,
+  ToastDescription,
+  ToastClose,
+  ToastAction
+} from '@/components/ui/toast';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/ui/Toast" 
+  component={Toast} 
+  parameters={{ layout: 'fullscreen' }}
+/>
+
+# Toast Component
+
+The `Toast` component is used to display toast notifications in the Twigstagram application. It supports different variants like default and destructive, and includes a title, description, close button, and action button.
+
+
+## Usage
+
+To use the `Toast` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+## Usage
+
+To use the `Toast` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+"use client"
+
+import * as React from "react"
+import * as ToastPrimitives from "@radix-ui/react-toast"
+import { cva, type VariantProps } from "class-variance-authority"
+import { X } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+
+const ToastProvider = ToastPrimitives.Provider
+
+const ToastViewport = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Viewport>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Viewport
+    ref={ref}
+    className={cn(
+      "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+      className
+    )}
+    {...props}
+  />
+))
+ToastViewport.displayName = ToastPrimitives.Viewport.displayName
+
+const toastVariants = cva(
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-md border p-6 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
+  {
+    variants: {
+      variant: {
+        default: "border bg-background text-foreground",
+        destructive:
+          "destructive group border-destructive bg-destructive text-destructive-foreground",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+const Toast = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Root>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
+    VariantProps<typeof toastVariants>
+>(({ className, variant, ...props }, ref) => {
+  return (
+    <ToastPrimitives.Root
+      ref={ref}
+      className={cn(toastVariants({ variant }), className)}
+      {...props}
+    />
+  )
+})
+Toast.displayName = ToastPrimitives.Root.displayName
+
+const ToastAction = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Action>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Action
+    ref={ref}
+    className={cn(
+      "inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
+      className
+    )}
+    {...props}
+  />
+))
+ToastAction.displayName = ToastPrimitives.Action.displayName
+
+const ToastClose = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Close>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Close
+    ref={ref}
+    className={cn(
+      "absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
+      className
+    )}
+    toast-close=""
+    {...props}
+  >
+    <X className="h-4 w-4" />
+  </ToastPrimitives.Close>
+))
+ToastClose.displayName = ToastPrimitives.Close.displayName
+
+const ToastTitle = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Title>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Title
+    ref={ref}
+    className={cn("text-sm font-semibold", className)}
+    {...props}
+  />
+))
+ToastTitle.displayName = ToastPrimitives.Title.displayName
+
+const ToastDescription = React.forwardRef<
+  React.ElementRef<typeof ToastPrimitives.Description>,
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Description>
+>(({ className, ...props }, ref) => (
+  <ToastPrimitives.Description
+    ref={ref}
+    className={cn("text-sm opacity-90", className)}
+    {...props}
+  />
+))
+ToastDescription.displayName = ToastPrimitives.Description.displayName
+
+type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
+
+type ToastActionElement = React.ReactElement<typeof ToastAction>
+
+export {
+  type ToastProps,
+  type ToastActionElement,
+  ToastProvider,
+  ToastViewport,
+  Toast,
+  ToastTitle,
+  ToastDescription,
+  ToastClose,
+  ToastAction,
+}
+```
+
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `Toast` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `Toast`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `Toast` looks balanced.
+- **Alignment:** Ensure that all elements within the `Toast` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `Toast` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `Toast` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `Toast` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the toast elements to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `Toast`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `Toast` to cater to unique use cases without compromising the overall design integrity.
+### Example CSS
+
+Here is the CSS used for styling the `Toast` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.fixed {
+  @apply fixed;
+}
+.top-0 {
+  @apply top-0;
+}
+.z-\[100\] {
+  @apply z-[100];
+}
+.flex {
+  @apply flex;
+}
+.max-h-screen {
+  @apply max-h-screen;
+}
+.w-full {
+  @apply w-full;
+}
+.flex-col-reverse {
+  @apply flex-col-reverse;
+}
+.p-4 {
+  @apply p-4;
+}
+.sm\:bottom-0 {
+  @apply sm:bottom-0;
+}
+.sm\:right-0 {
+  @apply sm:right-0;
+}
+.sm\:top-auto {
+  @apply sm:top-auto;
+}
+.sm\:flex-col {
+  @apply sm:flex-col;
+}
+.md\:max-w-\[420px\] {
+  @apply md:max-w-[420px];
+}
+.group {
+  @apply group;
+}
+.pointer-events-auto {
+  @apply pointer-events-auto;
+}
+.relative {
+  @apply relative;
+}
+.items-center {
+  @apply items-center;
+}
+.justify-between {
+  @apply justify-between;
+}
+.space-x-4 {
+  @apply space-x-4;
+}
+.overflow-hidden {
+  @apply overflow-hidden;
+}
+.rounded-md {
+  @apply rounded-md;
+}
+.border {
+  @apply border;
+}
+.p-6 {
+  @apply p-6;
+}
+.pr-8 {
+  @apply pr-8;
+}
+.shadow-lg {
+  @apply shadow-lg;
+}
+.transition-all {
+  @apply transition-all;
+}
+.data-\[swipe\=cancel\]\:translate-x-0 {
+  @apply translate-x-0;
+}
+.data-\[swipe\=end\]\:translate-x-\[var\(--radix-toast-swipe-end-x\)\] {
+  @apply translate-x-[var(--radix-toast-swipe-end-x)];
+}
+.data-\[swipe\=move\]\:translate-x-\[var\(--radix-toast-swipe-move-x\)\] {
+  @apply translate-x-[var(--radix-toast-swipe-move-x)];
+}
+.data-\[swipe\=move\]\:transition-none {
+  @apply transition-none;
+}
+.data-\[state\=open\]\:animate-in {
+  @apply animate-in;
+}
+.data-\[state\=closed\]\:animate-out {
+  @apply animate-out;
+}
+.data-\[swipe\=end\]\:animate-out {
+  @apply animate-out;
+}
+.data-\[state\=closed\]\:fade-out-80 {
+  @apply fade-out-80;
+}
+.data-\[state\=closed\]\:slide-out-to-right-full {
+  @apply slide-out-to-right-full;
+}
+.data-\[state\=open\]\:slide-in-from-top-full {
+  @apply slide-in-from-top-full;
+}
+.data-\[state\=open\]\:sm\:slide-in-from-bottom-full {
+  @apply sm:slide-in-from-bottom-full;
+}
+.bg-background {
+  @apply bg-white;
+}
+.text-foreground {
+  @apply text-black;
+}
+.border-destructive {
+  @apply border-red-500;
+}
+.bg-destructive {
+  @apply bg-red-500;
+}
+.text-destructive-foreground {
+  @apply text-white;
+}
+.inline-flex {
+  @apply inline-flex;
+}
+.h-8 {
+  @apply h-8;
+}
+.shrink-0 {
+  @apply shrink-0;
+}
+.justify-center {
+  @apply justify-center;
+}
+.rounded-md {
+  @apply rounded-md;
+}
+.bg-transparent {
+  @apply bg-transparent;
+}
+.px-3 {
+  @apply px-3;
+}
+.text-sm {
+  @apply text-sm;
+}
+.font-medium {
+  @apply font-medium;
+}
+.ring-offset-background {
+  @apply ring-offset-white;
+}
+.transition-colors {
+  @apply transition-colors;
+}
+.hover\:bg-secondary {
+  @apply hover:bg-gray-200;
+}
+.focus\:outline-none {
+  @apply outline-none;
+}
+.focus\:ring-2 {
+  @apply ring-2;
+}
+.focus\:ring-ring {
+  @apply ring-blue-500;
+}
+.focus\:ring-offset-2 {
+  @apply ring-offset-2;
+}
+.disabled\:pointer-events-none {
+  @apply pointer-events-none;
+}
+.disabled\:opacity-50 {
+  @apply opacity-50;
+}
+.group-\[.destructive\]\:border-muted\/40 {
+  @apply border-gray-400;
+}
+.group-\[.destructive\]\:hover\:border-destructive\/30 {
+  @apply border-red-300;
+}
+.group-\[.destructive\]\:hover\:bg-destructive {
+  @apply bg-red-500;
+}
+.group-\[.destructive\]\:hover\:text-destructive-foreground {
+  @apply text-white;
+}
+.group-\[.destructive\]\:focus\:ring-destructive {
+  @apply ring-red-500;
+}
+.absolute {
+  @apply absolute;
+}
+.right-2 {
+  @apply right-2;
+}
+.top-2 {
+  @apply top-2;
+}
+.p-1 {
+  @apply p-1;
+}
+.text-foreground\/50 {
+  @apply text-gray-500;
+}
+.opacity-0 {
+  @apply opacity-0;
+}
+.transition-opacity {
+  @apply transition-opacity;
+}
+.hover\:text-foreground {
+  @apply text-black;
+}
+.focus\:opacity-100 {
+  @apply opacity-100;
+}
+.focus\:outline-none {
+  @apply outline-none;
+}
+.focus\:ring-2 {
+  @apply ring-2;
+}
+.group-hover\:opacity-100 {
+  @apply opacity-100;
+}
+.group-\[.destructive\]\:text-red-300 {
+  @apply text-red-300;
+}
+.group-\[.destructive\]\:hover\:text-red-50 {
+  @apply text-red-50;
+}
+.group-\[.destructive\]\:focus\:ring-red-400 {
+  @apply ring-red-400;
+}
+.group-\[.destructive\]\:focus\:ring-offset-red-600 {
+  @apply ring-offset-red-600;
+}
+.text-sm {
+  @apply text-sm;
+}
+.font-semibold {
+  @apply font-semibold;
+}
+.opacity-90 {
+  @apply opacity-90;
+}
+```

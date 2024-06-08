@@ -1,0 +1,173 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import UserCard from '@/components/shared/UserCard';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/UserCard" 
+  component={UserCard} 
+  parameters={{ layout: 'fullscreen'}}
+/>
+
+# UserCard Component
+
+The `UserCard` component is used to display user information in the Twigstagram application. It includes the user's profile picture, name, username, and a follow button.
+
+## Example
+
+Here is an example of how the `UserCard` component looks and functions:
+
+<Canvas>
+  <Story name="Default">
+    {() => (
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter>
+          <UserCard 
+            user={{
+              $id: 'user_id',
+              imageUrl: '/assets/icons/profile-placeholder.svg', // Example profile image URL
+              name: 'John Doe',
+              username: 'johndoe',
+            }} 
+          />
+        </MemoryRouter>
+      </QueryClientProvider>
+    )}
+  </Story>
+</Canvas>
+
+## Usage
+
+To use the `UserCard` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import { Models } from "appwrite";
+import { Link } from "react-router-dom";
+
+import { Button } from "../ui/button";
+
+type UserCardProps = {
+  user: Models.Document;
+};
+
+const UserCard = ({ user }: UserCardProps) => {
+  return (
+    <Link to={`/profile/${user.$id}`} className="user-card">
+      <img
+        src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
+        alt="creator"
+        className="rounded-full w-14 h-14"
+      />
+
+      <div className="flex-center flex-col gap-1">
+        <p className="base-medium text-light-1 text-center line-clamp-1">
+          {user.name}
+        </p>
+        <p className="small-regular text-light-3 text-center line-clamp-1">
+          @{user.username}
+        </p>
+      </div>
+
+      <Button type="button" size="sm" className="shad-button_primary px-5">
+        Follow
+      </Button>
+    </Link>
+  );
+};
+
+export default UserCard;
+```
+
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `UserCard` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `UserCard`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `UserCard` looks balanced.
+- **Alignment:** Ensure that all elements within the `UserCard` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `UserCard` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `UserCard` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `UserCard` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the buttons and links to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `UserCard`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `UserCard` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `UserCard` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.user-card {
+  @apply flex flex-col items-center gap-3 p-4 bg-white border border-light-3 rounded-lg shadow-md;
+}
+.rounded-full {
+  @apply rounded-full;
+}
+.w-14 {
+  @apply w-14;
+}
+.h-14 {
+  @apply h-14;
+}
+.flex-center {
+  @apply flex justify-center items-center;
+}
+.flex-col {
+  @apply flex-col;
+}
+.gap-1 {
+  @apply gap-1;
+}
+.base-medium {
+  @apply text-base font-medium;
+}
+.text-light-1 {
+  @apply text-gray-900;
+}
+.text-center {
+  @apply text-center;
+}
+.line-clamp-1 {
+  @apply line-clamp-1;
+}
+.small-regular {
+  @apply text-sm;
+}
+.text-light-3 {
+  @apply text-gray-500;
+}
+.shad-button_primary {
+  @apply bg-primary-500 text-white px-5 py-2 rounded-md shadow-md hover:bg-primary-600;
+}
+.px-5 {
+  @apply px-5;
+}
+```

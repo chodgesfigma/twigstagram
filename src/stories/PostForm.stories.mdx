@@ -1,0 +1,286 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import PostForm from '@/components/forms/PostForm';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/forms/PostForm" 
+  component={PostForm} 
+  parameters={{ layout: 'fullscreen' }}
+/>
+
+# PostForm Component
+
+The `PostForm` component is used to create and update posts in the Twigstagram application. It includes fields for caption, photos, location, and tags, and supports both create and update actions.
+
+
+## Usage
+
+To use the `PostForm` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { useNavigate } from "react-router-dom"
+import { Models } from "appwrite";
+
+import { Button } from "@/components/ui/button"
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "../ui/textarea"
+import { PostValidation } from "@/lib/validation"
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/queriesAndMutations"
+import { useUserContext } from "@/context/AuthContext"
+import { useToast } from "../ui/use-toast"
+import Loader from "../shared/Loader";
+import FileUploader from "../shared/FileUploader";
+
+type PostFormProps = {
+    post?: Models.Document;
+    action: "Create" | "Update";
+  };
+  
+  const PostForm = ({ post, action }: PostFormProps) => {
+    const navigate = useNavigate();
+    const { toast } = useToast();
+    const { user } = useUserContext();
+    const form = useForm<z.infer<typeof PostValidation>>({
+      resolver: zodResolver(PostValidation),
+      defaultValues: {
+        caption: post ? post?.caption : "",
+        file: [],
+        location: post ? post.location : "",
+        tags: post ? post.tags.join(",") : "",
+      },
+    });
+  
+    // Query
+    const { mutateAsync: createPost, isLoading: isLoadingCreate } =
+      useCreatePost();
+    const { mutateAsync: updatePost, isLoading: isLoadingUpdate } =
+      useUpdatePost();
+  
+    // Handler
+    const handleSubmit = async (value: z.infer<typeof PostValidation>) => {
+      // ACTION = UPDATE
+      if (post && action === "Update") {
+        const updatedPost = await updatePost({
+          ...value,
+          postId: post.$id,
+          imageId: post.imageId,
+          imageUrl: post.imageUrl,
+        });
+  
+        if (!updatedPost) {
+          toast({
+            title: `${action} post failed. Please try again.`,
+          });
+        }
+        return navigate(`/posts/${post.$id}`);
+      }
+  
+      // ACTION = CREATE
+      const newPost = await createPost({
+        ...value,
+        userId: user.id,
+      });
+  
+      if (!newPost) {
+        toast({
+          title: `${action} post failed. Please try again.`,
+        });
+      }
+      navigate("/");
+    };
+  
+    return (
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="flex flex-col gap-9 w-full  max-w-5xl">
+          <FormField
+            control={form.control}
+            name="caption"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="shad-form_label">Caption</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="shad-textarea custom-scrollbar"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="shad-form_message" />
+              </FormItem>
+            )}
+          />
+  
+          <FormField
+            control={form.control}
+            name="file"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="shad-form_label">Add Photos</FormLabel>
+                <FormControl>
+                  <FileUploader
+                    fieldChange={field.onChange}
+                    mediaUrl={post?.imageUrl}
+                  />
+                </FormControl>
+                <FormMessage className="shad-form_message" />
+              </FormItem>
+            )}
+          />
+  
+          <FormField
+            control={form.control}
+            name="location"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="shad-form_label">Add Location</FormLabel>
+                <FormControl>
+                  <Input type="text" className="shad-input" {...field} />
+                </FormControl>
+                <FormMessage className="shad-form_message" />
+              </FormItem>
+            )}
+          />
+  
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="shad-form_label">
+                  Add Tags (separated by comma " , ")
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Tree, Leaf, Nature"
+                    type="text"
+                    className="shad-input"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="shad-form_message" />
+              </FormItem>
+            )}
+          />
+  
+          <div className="flex gap-4 items-center justify-end">
+            <Button
+              type="button"
+              className="shad-button_dark_4"
+              onClick={() => navigate(-1)}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="shad-button_primary whitespace-nowrap"
+              disabled={isLoadingCreate || isLoadingUpdate}>
+              {(isLoadingCreate || isLoadingUpdate) && <Loader />}
+              {action} Post
+            </Button>
+          </div>
+        </form>
+      </Form>
+    );
+  };
+  
+  export default PostForm;
+```
+
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `PostForm` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `PostForm`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `PostForm` looks balanced.
+- **Alignment:** Ensure that all elements within the `PostForm` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `PostForm` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `PostForm` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `PostForm` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the form elements to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `PostForm`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `PostForm` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `PostForm` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.flex {
+  @apply flex;
+}
+.flex-col {
+  @apply flex-col;
+}
+.gap-9 {
+  @apply gap-9;
+}
+.w-full {
+  @apply w-full;
+}
+.max-w-5xl {
+  @apply max-w-5xl;
+}
+.shad-form_label {
+  @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
+}
+.shad-textarea {
+  @apply flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+}
+.custom-scrollbar {
+  @apply scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-400;
+}
+.shad-form_message {
+  @apply mt-2 text-sm text-destructive;
+}
+.shad-input {
+  @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+}
+.shad-button_dark_4 {
+  @apply inline-flex items-center justify-center rounded-md border bg-background px-4 py-2 text-sm font-medium shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+}
+.shad-button_primary {
+  @apply inline-flex items-center justify-center rounded-md border bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+}
+.whitespace-nowrap {
+  @apply whitespace-nowrap;
+}
+
+```

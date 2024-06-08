@@ -1,0 +1,198 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import PostCard from '@/components/shared/PostCard';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/PostCard" 
+  component={PostCard} 
+  parameters={{ layout: 'fullscreen' }}
+/>
+
+# PostCard Component
+
+The `PostCard` component is used to display individual posts in the Twigstagram application. It shows the post's image, caption, tags, and user information, and provides links for interacting with the post.
+
+
+## Usage
+
+To use the `PostCard` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import { useUserContext } from "@/context/AuthContext";
+import { formatDateString } from "@/lib/utils";
+import { Models } from "appwrite";
+import { Link } from "react-router-dom";
+import PostStats from "./PostStats";
+
+type PostCardProps = {
+    post: Models.Document;
+}
+
+const PostCard = ({ post }: PostCardProps) => {
+    const { user } = useUserContext();
+
+    if(!post.creator) return;
+
+  return (
+    <div className="post-card">
+        <div className="flex-between">
+            <div className="flex items-center gap-3">
+                <Link to={`/profile/${post.creator.$id}`}>
+                    <img
+                        src={post?.creator?.imageUrl || '/assets/icons/profile-placeholder.svg'}
+                        alt="creator"
+                        className="rounded-full w-12 lg:h-12"
+                    />
+                </Link>
+
+                <div className="flex flex-col">
+                    <p className="base-medium lg:body-bold text-light-1">
+                        {post.creator.name}
+                    </p>
+                    <div className="flex-center gap-2 text-light-3">
+                    <p className="subtle=semibold lg:small-regular">
+                        {formatDateString(post.$createdAt)}
+                    </p>
+
+                    <p className="subtle-semibold lg:small-regular">
+                        {post.location}
+                    </p>
+                    </div>
+                </div>
+            </div>
+
+            <Link to={`/update-post/${post.$id}`}
+                className={`${user.id !== post.creator.$id && "hidden"}`} >
+
+                <img src="/assets/icons/edit.svg" alt="edit" width={20} height={20} />
+            
+            </Link>
+        </div>
+
+        <Link to ={`/posts/${post.$id}`}>
+            <div className="small-medium lg:base-medium py-5">
+                <p>{post.caption}</p>
+                <ul className="flex gap-1 mt-2">
+                    {post.tags.map((tag: string) => (
+                        <li key={tag} className="text-light-3">
+                           #{tag} 
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <img
+                src={post.imageUrl || '/assets/icons/profile-placeholder.svg'}
+                className="post-card_img"
+                alt="post image"
+            />
+
+        </Link>
+        
+
+        <PostStats post={post} userId={user.id}  />
+    </div>
+  )
+}
+
+export default PostCard;
+```
+
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `PostCard` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `PostCard`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `PostCard` looks balanced.
+- **Alignment:** Ensure that all elements within the `PostCard` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `PostCard` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `PostCard` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `PostCard` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the buttons and inputs to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `PostCard`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `PostCard` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `PostCard` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.post-card {
+  @apply flex flex-col gap-3 p-4 border border-light-3 rounded-lg bg-white shadow-md;
+}
+.flex-between {
+  @apply flex justify-between items-center;
+}
+.flex-center {
+  @apply flex items-center;
+}
+.gap-3 {
+  @apply gap-3;
+}
+.w-12 {
+  @apply w-12;
+}
+.lg\:h-12 {
+  @apply lg:h-12;
+}
+.rounded-full {
+  @apply rounded-full;
+}
+.base-medium {
+  @apply text-base font-medium;
+}
+.lg\:body-bold {
+  @apply lg:font-bold lg:text-lg;
+}
+.text-light-1 {
+  @apply text-gray-900;
+}
+.text-light-3 {
+  @apply text-gray-500;
+}
+.subtle-semibold {
+  @apply font-semibold;
+}
+.lg\:small-regular {
+  @apply lg:text-sm;
+}
+.small-medium {
+  @apply text-sm font-medium;
+}
+.lg\:base-medium {
+  @apply lg:text-base lg:font-medium;
+}
+.post-card_img {
+  @apply w-full h-auto rounded-lg;
+}
+
+```

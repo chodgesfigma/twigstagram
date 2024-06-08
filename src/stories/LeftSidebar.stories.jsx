@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // Imp
 
 
 export default {
-    title: 'Twigstagram/shared/LeftSidebar',
+    title: 'Twigstagram/msc/LeftSidebar',
     component: LeftSidebar,
     parameters: {
       layout: 'fullscreen',

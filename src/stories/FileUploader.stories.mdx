@@ -1,0 +1,178 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import FileUploader from '@/components/shared/FileUploader'; // Update the import path as per your directory structure
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/FileUploader" 
+  component={FileUploader} 
+  parameters={{ layout: 'fullscreen' }}
+/>
+
+# FileUploader Component
+
+The `FileUploader` component is used to handle file uploads in the Twigstagram application. It provides an intuitive drag-and-drop interface for users to upload images.
+
+## Example
+
+Here is an example of how the `FileUploader` component looks and functions:
+
+<Canvas>
+  <Story name="ignore">
+    {() => (
+      <FileUploader 
+        fieldChange={(files) => console.log('Field change:', files)} 
+        mediaUrl=""
+      />
+    )}
+  </Story>
+</Canvas>
+
+## Usage
+
+To use the `FileUploader` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import React, { useCallback, useState } from 'react';
+import { FileWithPath, useDropzone } from 'react-dropzone';
+import { Button } from '../ui/button';
+
+type FileUploaderProps = {
+  fieldChange: (files: File[]) => void;
+  mediaUrl: string;
+};
+
+const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
+  const [file, setFile] = useState<File[]>([]);
+  const [fileUrl, setFileUrl] = useState(mediaUrl);
+
+  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
+    setFile(acceptedFiles);
+    fieldChange(acceptedFiles);
+    setFileUrl(URL.createObjectURL(acceptedFiles[0]));
+  }, [fieldChange]);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: 'image/*',
+    multiple: false,
+  });
+
+  return (
+    <div {...getRootProps()} className="flex flex-center flex-col bg-dark-3 rounded-x1 cursor-pointer">
+      <input {...getInputProps()} className="cursor-pointer"/>
+      {fileUrl ? (
+        <>
+          <div className="flex flex-1 justify-center w-full p-5 lg:p-10">
+            <img
+              src={fileUrl}
+              alt="image"
+              className="file_uploader-img"
+              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover', objectPosition: 'center' }}
+            />
+          </div>
+          <p className="file_uploader-label">Click or drag photo to replace</p>
+        </>
+      ) : (
+        <div className="file_uploader-box">
+          <img
+            src="/assets/icons/file-upload.svg"
+            width={96}
+            height={77}
+            alt="file-upload"
+          />
+          <h3 className="base-medium text-light-2 mb-2 mt-6">Drag photo here</h3>
+          <p className="text-light-4 small-regular mb-6">SVG, PNG, JPG</p>
+          <Button className="shad-button_dark_4">
+            Select from computer
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default FileUploader;
+```
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `FileUploader` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `FileUploader`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `FileUploader` looks balanced.
+- **Alignment:** Ensure that all elements within the `FileUploader` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `FileUploader` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `FileUploader` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `FileUploader` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the buttons and inputs to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `FileUploader`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `FileUploader` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `FileUploader` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.file_uploader-img {
+  @apply max-w-full max-h-full object-cover object-center;
+}
+.file_uploader-label {
+  @apply text-center mt-2 text-light-2;
+}
+.file_uploader-box {
+  @apply flex flex-col items-center justify-center p-6 border-2 border-dashed border-light-3 rounded-lg;
+}
+.flex-center {
+  @apply flex justify-center items-center;
+}
+.bg-dark-3 {
+  @apply bg-gray-800;
+}
+.rounded-x1 {
+  @apply rounded-lg;
+}
+.cursor-pointer {
+  @apply cursor-pointer;
+}
+.base-medium {
+  @apply text-lg font-medium;
+}
+.text-light-2 {
+  @apply text-gray-200;
+}
+.text-light-4 {
+  @apply text-gray-400;
+}
+.small-regular {
+  @apply text-sm font-normal;
+}
+.shad-button_dark_4 {
+  @apply bg-gray-700 text-white py-2 px-4 rounded-md shadow-md hover:bg-gray-600;
+}
+```

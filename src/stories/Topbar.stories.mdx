@@ -1,0 +1,219 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import Topbar from '@/components/shared/Topbar';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/Topbar" 
+  component={Topbar} 
+  parameters={{ layout: 'fullscreen' }}
+/>
+
+# Topbar Component
+
+The `Topbar` component is used to display the top navigation bar in the Twigstagram application. It includes the logo, a profile link, and a logout button.
+
+## Example
+
+Here is an example of how the `Topbar` component looks and functions:
+
+<Canvas>
+  <Story name="Default">
+    {() => (
+      <div>
+        <style>{`
+          .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #09090A; /* Update with your dark-2 color from Tailwind CSS */
+            position: sticky;
+            top: 0;
+            z-index: 50;
+          }
+
+          .topbar-logo {
+            width: 130px;
+            height: 32.5px;
+          }
+
+          .topbar-profile {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+          }
+
+          .topbar-icons {
+            display: flex;
+            gap: 2rem; /* Adjust the gap between icons */
+          }
+        `}</style>
+        <QueryClientProvider client={new QueryClient()}>
+          <MemoryRouter>
+            <Topbar user={{
+              id: 'user_id',
+              imageUrl: '/assets/icons/profile-placeholder.svg', // Example profile image URL
+            }} />
+          </MemoryRouter>
+        </QueryClientProvider>
+      </div>
+    )}
+  </Story>
+</Canvas>
+
+## Usage
+
+To use the `Topbar` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '../ui/button';
+import { useSignOutAccount } from '@/lib/react-query/queriesAndMutations';
+import { useEffect } from 'react';
+import { useUserContext } from '@/context/AuthContext';
+
+const Topbar = () => {
+    const { mutate: signOut, isSuccess } = useSignOutAccount();
+    const navigate = useNavigate();
+    const { user } = useUserContext();
+
+    useEffect(() => {
+        if (isSuccess) navigate(0); 
+    }, [isSuccess])
+
+  return (
+    <section className="topbar">
+        <div className="flex-between py-4 px-5">
+            <Link to="/" className="flex gap-3 items-center">
+                <img
+                    src="/assets/images/twigma.svg"
+                    alt="logo"
+                    width={130}
+                    height={325}
+                />
+            </Link>
+
+            <div className="flex gap-4">
+                <Button variant="ghost" className="shad-button_ghost"
+                onClick={() => signOut()}>
+                    <img src="/assets/icons/logout-icon-1.svg" alt="logout" />
+                </Button>
+                <Link to={'/profile/${user.id}'} className="flex-center gap-3">
+                    <img
+                        src={user.imageUrl || '/assets/icons/profile-placeholder.svg'}
+                        alt="profile"
+                        className='h-8 w-8 rounded-full'
+                    />
+                </Link>
+            </div>
+
+        </div>
+    </section>
+  )
+}
+
+export default Topbar;
+```
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `Topbar` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `Topbar`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `Topbar` looks balanced.
+- **Alignment:** Ensure that all elements within the `Topbar` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `Topbar` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `Topbar` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `Topbar` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the buttons and links to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `Topbar`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `Topbar` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `Topbar` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.topbar {
+  @apply flex justify-between items-center p-4 bg-dark-2 sticky top-0 z-50;
+}
+.topbar-logo {
+  @apply w-32 h-8;
+}
+.topbar-profile {
+  @apply w-12 h-12 rounded-full;
+}
+.topbar-icons {
+  @apply flex gap-8;
+}
+.flex {
+  @apply flex;
+}
+.justify-between {
+  @apply justify-between;
+}
+.items-center {
+  @apply items-center;
+}
+.gap-3 {
+  @apply gap-3;
+}
+.gap-4 {
+  @apply gap-4;
+}
+.p-4 {
+  @apply p-4;
+}
+.p-5 {
+  @apply p-5;
+}
+.bg-dark-2 {
+  @apply bg-gray-800;
+}
+.sticky {
+  @apply sticky;
+}
+.top-0 {
+  @apply top-0;
+}
+.z-50 {
+  @apply z-50;
+}
+.h-8 {
+  @apply h-8;
+}
+.w-8 {
+  @apply w-8;
+}
+.w-32 {
+  @apply w-32;
+}
+```

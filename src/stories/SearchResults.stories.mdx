@@ -1,0 +1,102 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import SearchResults from '@/components/shared/SearchResults';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/SearchResults" 
+  component={SearchResults} 
+  parameters={{ layout: 'fullscreen' }}
+/>
+
+# SearchResults Component
+
+The `SearchResults` component is used to display search results in the Twigstagram application. It shows a loader while fetching data, displays the search results in a grid format, or shows a message if no results are found.
+
+
+## Usage
+
+To use the `SearchResults` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import { Models } from 'appwrite'
+import Loader from './Loader';
+import GridPostList from './GridPostList';
+
+type SearchResultsProps = {
+  isSearchFetching: boolean;
+  searchedPosts: Models.Document[];
+}
+
+const SearchResults = ({ isSearchFetching, searchedPosts }: SearchResultsProps) => {
+  if(isSearchFetching) return <Loader />
+
+  if(searchedPosts && searchedPosts.documents.length > 0) return (
+    <GridPostList posts={searchedPosts.documents} />
+  );
+
+  return (
+    <p className="text-light-4 mt-10 text-center w-full">No results found</p>
+  )
+}
+
+export default SearchResults;
+```
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `SearchResults` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `SearchResults`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `SearchResults` looks balanced.
+- **Alignment:** Ensure that all elements within the `SearchResults` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `SearchResults` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `SearchResults` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `SearchResults` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the loader and search results to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `SearchResults`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `SearchResults` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `SearchResults` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.text-light-4 {
+  @apply text-gray-500;
+}
+.mt-10 {
+  @apply mt-10;
+}
+.text-center {
+  @apply text-center;
+}
+.w-full {
+  @apply w-full;
+}
+```

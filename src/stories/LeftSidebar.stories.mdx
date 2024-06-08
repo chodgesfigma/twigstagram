@@ -1,0 +1,234 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import LeftSidebar from '@/components/shared/LeftSidebar';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MemoryRouter } from 'react-router-dom';
+import React from 'react';
+
+<Meta 
+  title="Twigstagram/shared/LeftSidebar" 
+  component={LeftSidebar} 
+  parameters={{ layout: 'fullscreen' }}
+/>
+
+# LeftSidebar Component
+
+The `LeftSidebar` component is used to display the sidebar navigation in the Twigstagram application. It includes links to various sections, user information, and a logout button.
+
+## Example
+
+Here is an example of how the `LeftSidebar` component looks and functions:
+
+<Canvas>
+  <Story name="Default">
+    {() => (
+      <QueryClientProvider client={new QueryClient()}>
+        <MemoryRouter>
+          <LeftSidebar />
+        </MemoryRouter>
+      </QueryClientProvider>
+    )}
+  </Story>
+</Canvas>
+
+## Usage
+
+To use the `LeftSidebar` component in your project, you can import it and use it with the desired props. Below is an example of how to include it in your application.
+
+```jsx
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { INavLink } from "@/types";
+import { sidebarLinks } from "@/constants";
+import { Button } from "@/components/ui/button";
+import { useUserContext, INITIAL_USER } from "@/context/AuthContext";
+import { useSignOutAccount } from "@/lib/react-query/queriesAndMutations";
+import Loader from "./Loader";
+
+const LeftSidebar = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { user, setUser, setIsAuthenticated, isLoading } = useUserContext();
+
+  const { mutate: signOut } = useSignOutAccount();
+
+  const handleSignOut = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    signOut();
+    setIsAuthenticated(false);
+    setUser(INITIAL_USER);
+    navigate("/sign-in");
+  };
+
+  return (
+    <nav className="leftsidebar">
+      <div className="flex flex-col gap-11">
+        <Link to="/" className="flex gap-3 items-center">
+          <img
+            src="/assets/images/twigma.svg"
+            alt="logo"
+            width={170}
+            height={36}
+          />
+        </Link>
+
+        {isLoading || !user.email ? (
+          <div className="h-14">
+            <Loader />
+          </div>
+        ) : (
+          <Link to={`/profile/${user.id}`} className="flex gap-3 items-center">
+            <img
+              src={user.imageUrl || "/assets/icons/profile-placeholder.svg"}
+              alt="profile"
+              className="h-14 w-14 rounded-full"
+            />
+            <div className="flex flex-col">
+              <p className="body-bold">{user.name}</p>
+              <p className="small-regular text-light-3">@{user.username}</p>
+            </div>
+          </Link>
+        )}
+
+        <ul className="flex flex-col gap-6">
+          {sidebarLinks.map((link: INavLink) => {
+            const isActive = pathname === link.route;
+
+            return (
+              <li
+                key={link.label}
+                className={`leftsidebar-link group ${
+                  isActive && "bg-primary-500"
+                }`}>
+                <NavLink
+                  to={link.route}
+                  className="flex gap-4 items-center p-4">
+                  <img
+                    src={link.imgURL}
+                    alt={link.label}
+                    className={`group-hover:invert-white ${
+                      isActive && "invert-white"
+                    }`}
+                  />
+                  {link.label}
+                </NavLink>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <Button
+        variant="ghost"
+        className="shad-button_ghost"
+        onClick={(e) => handleSignOut(e)}>
+        <img src="/assets/icons/logout-icon-1.svg" alt="logout" />
+        <p className="small-medium lg:base-medium">Logout</p>
+      </Button>
+    </nav>
+  );
+};
+
+export default LeftSidebar;
+```
+## Figma
+
+[Link To Figma Component](https://www.figma.com/) | Figma is a collaborative design and prototyping tool. It's the heart of the design process, allowing designers to work together seamlessly.
+
+- **Get Access**: If you're not already part of the Figma project, request **DevMode** access from the project lead or manager.
+
+## Style Guidelines
+
+When implementing the `LeftSidebar` component, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the `LeftSidebar`. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the `LeftSidebar` looks balanced.
+- **Alignment:** Ensure that all elements within the `LeftSidebar` are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The `LeftSidebar` should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the `LeftSidebar` spans the appropriate width for its context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the `LeftSidebar` is accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the buttons and inputs to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the `LeftSidebar`. Ensure the component is styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components within the `LeftSidebar` to cater to unique use cases without compromising the overall design integrity.
+
+### Example CSS
+
+Here is the CSS used for styling the `LeftSidebar` component, incorporating the styles and utilities from your global CSS:
+
+```css
+.leftsidebar {
+  @apply flex flex-col gap-11 p-10;
+}
+.leftsidebar-link {
+  @apply group flex gap-4 items-center p-4;
+}
+.group-hover\:invert-white:hover img {
+  @apply invert;
+}
+.invert-white {
+  @apply invert;
+}
+.flex {
+  @apply flex;
+}
+.flex-col {
+  @apply flex-col;
+}
+.gap-11 {
+  @apply gap-11;
+}
+.p-10 {
+  @apply p-10;
+}
+.bg-primary-500 {
+  @apply bg-primary-500;
+}
+.h-14 {
+  @apply h-14;
+}
+.h-14.w-14 {
+  @apply h-14 w-14;
+}
+.rounded-full {
+  @apply rounded-full;
+}
+.body-bold {
+  @apply font-bold text-lg;
+}
+.small-regular {
+  @apply text-sm;
+}
+.text-light-3 {
+  @apply text-gray-500;
+}
+.shad-button_ghost {
+  @apply bg-transparent hover:bg-gray-200;
+}
+.small-medium {
+  @apply text-sm font-medium;
+}
+.lg\:base-medium {
+  @apply lg:text-base lg:font-medium;
+}
+```

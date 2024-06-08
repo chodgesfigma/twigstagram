@@ -1,0 +1,268 @@
+import { Meta, Markdown } from '@storybook/addon-docs';
+
+export const Logo = () => (
+  <img src="/assets/images/twigma.svg" alt="Twigstagram Logo" style={{ width: '600px', margin: '20px 0' }} />
+);
+
+<Logo />
+-
+
+
+
+<Meta title="Docs/Intro" />
+
+-
+
+# Documentation 
+
+
+
+## Table of Contents:
+
+1. [Introduction](#introduction)
+2. [Getting Started](#getting-started)
+3. [Project Structure](#project-structure)
+4. [Components](#components)
+   - [Bottombar](https://www.chromatic.com/component?appId=your-app-id&name=Bottombar&buildNumber=latest)
+   - [Button](#button)
+   - [FileUploader](#fileuploader)
+   - [GridPostList](#gridpostlist)
+   - [LeftSidebar](#leftsidebar)
+   - [Loader](#loader)
+   - [PostCard](#postcard)
+   - [PostStats](#poststats)
+   - [ProfileUploader](#profileuploader)
+   - [SearchResults](#searchresults)
+   - [Topbar](#topbar)
+   - [UserCard](#usercard)
+   - [Form](#form)
+   - [Input](#input)
+   - [Label](#label)
+   - [Textarea](#textarea)
+   - [Toast](#toast)
+   - [PostForm](#postform)
+5. [Styling Guidelines](#styling-guidelines)
+6. [Testing](#testing)
+7. [Contributing](#contributing)
+8. [Figma Design](#figma-design)
+
+---
+
+## Introduction
+
+Twigstagram is a modern social media application. It allows users to share photos, interact with posts, and follow other users. The application is built using React, Tailwind CSS, and Appwrite, with a focus on modular and reusable components. This documentation will guide you through the various components and functionalities of the application, ensuring you have the necessary knowledge to effectively contribute and maintain the project.
+
+## Getting Started
+
+### To get started with Twigstagram, follow these steps:
+
+ **Clone the Repository:**
+   ```sh
+   git clone https://github.com/yourusername/twigstagram.git
+   cd twigstagram
+```
+ **Install Dependencies:**
+
+```
+npm install
+```
+
+ **Run the Vite Development Server:**
+```
+npm run dev
+```
+ **Open the Application:**
+Open your browser and navigate to http://localhost.
+
+ **Make sure to down,oad the .env file**
+Validate your .env file in the root directory an that the Appwrite credentials are working as expected.
+
+---
+
+## Project Structure
+
+Twigstagram follows a modular structure with a focus on separation of concerns. Below is an overview of the project structure:
+
+```plaintext
+twigstagram/
+│
+├── client/
+│   ├── public/                   # Public assets
+│   ├── src/
+│   │   ├── components/           # Reusable components
+│   │   │   ├── shared/           # Shared components
+│   │   │   ├── ui/               # UI components
+│   │   │   └── forms/            # Form components
+│   │   ├── context/              # Context providers
+│   │   ├── lib/                  # Utility functions and hooks
+│   │   ├── pages/                # Page components
+│   │   ├── styles/               # Global styles
+│   │   ├── App.js                # Main application component
+│   │   └── index.js              # Application entry point
+│   ├── .env                      # Environment variables
+│   ├── .gitignore                # Git ignore file
+│   ├── package.json              # NPM package configuration
+│   └── README.md                 # Project documentation
+├── server/
+│   ├── index.js                  # Server entry point
+│   ├── .env                      # Environment variables for server
+│   ├── .gitignore                # Git ignore file
+│   ├── package.json              # NPM package configuration for server
+│   └── README.md                 # Server documentation
+└── README.md                     # Project documentation
+
+```
+
+## Styling Guidelines
+
+When implementing the components in Twigstagram, it is important to adhere to certain style guidelines to maintain a consistent look and feel throughout the application. Below are some recommended style guidelines:
+
+### Consistency
+
+- **Colors:** Use the defined color palette for all elements in the components. Ensure that the colors match the overall theme of the application.
+- **Typography:** Use the `Inter` font family, as specified in your global CSS. Apply appropriate text classes for consistent typography.
+
+### Spacing and Alignment
+
+- **Padding and Margin:** Maintain consistent padding and margin values. Use utility classes to ensure the components look balanced.
+- **Alignment:** Ensure that all elements are properly aligned, both horizontally and vertically.
+
+### Responsiveness
+
+- **Mobile-Friendly:** The components should be fully responsive and work well on various screen sizes.
+- **Viewport Width:** Make sure the components span the appropriate width for their context.
+
+### Accessibility
+
+- **Keyboard Navigation:** Ensure that the components are accessible via keyboard navigation.
+- **Aria Labels:** Use appropriate ARIA labels for the buttons and inputs to improve accessibility for screen readers.
+- **Contrast:** Maintain sufficient contrast between the text and the background color to ensure readability.
+
+### Interactions
+
+- **Hover and Focus States:** Define clear hover and focus states for interactive elements. Use utility classes to style these states.
+- **Active State:** Highlight the active or selected state to indicate the current action.
+
+### Customization
+
+- **Theming:** Allow for easy customization and theming of the components. Ensure the components are styled using utility classes that can be easily adjusted.
+- **Component Overrides:** Provide options to override specific styles or components to cater to unique use cases without compromising the overall design integrity.
+
+
+## Testing
+
+Twigstagram uses Jest and React Testing Library for testing. Below are the steps to run the tests and ensure the application functions correctly.
+
+### Running Tests
+
+ **Run All Tests:**
+   ```sh
+   npm test
+```
+**Run Tests with Coverage:**
+```
+npm run test:coverage
+```
+**Watch Mode:**
+```
+npm run test:watch
+```
+### Writing Tests
+
+Unit Tests: Focus on testing individual components and functions.
+Integration Tests: Test the interaction between multiple components.
+End-to-End Tests: Ensure the entire application works as expected.
+
+### Example Test
+
+```jsx
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import Bottombar from '@/components/shared/Bottombar';
+
+test('renders Bottombar component', () => {
+  render(<Bottombar />);
+  const linkElement = screen.getByText(/Home/i);
+  expect(linkElement).toBeInTheDocument();
+});
+```
+---
+
+## Contributing
+
+We welcome contributions to Twigstagram! Follow the guidelines below to get started.
+
+### Fork the Repository
+
+**Fork the Repository:**
+   Click the "Fork" button on the top right of the repository page.
+
+**Clone Your Fork:**
+   ```sh
+   git clone https://github.com/yourusername/twigstagram.git
+   cd twigstagram
+
+```
+**Add Upstream Remote:**
+   ```sh
+Add Upstream Remote:
+```
+**Create a Branch:**
+   ```sh
+git checkout -b feature/your-feature-name
+```
+**Make Your Changes and Commit:**
+
+Edit the files and make your changes.
+
+   ```sh
+git add .
+git commit -m "Add your commit message"
+```
+**Push Your Changes:**
+
+   ```sh
+Push Your Changes
+```
+
+## Figma Design
+
+Twigstagram utilizes Figma for UI/UX design, allowing for collaborative design development and prototyping. Below is a guide on how to access the Figma files associated with the project and how to utilize them effectively.
+
+### Accessing Figma Files
+
+1. **Figma Project Link:** 
+   [Twigstagram Figma Files](https://www.figma.com/file/YOUR_FIGMA_FILE_ID/Twigstagram) - Access the main Figma file here. Make sure to request access if you are not part of the project yet.
+
+2. **Request Access:**
+   If you do not have access, contact the project manager or the design lead to be added to the Figma project.
+
+### Using Figma
+
+- **Collaboration:** Figma is a powerful tool for teams to collaborate in real time. Utilize the commenting feature to provide feedback directly on the design.
+
+- **Prototyping:** Use Figma to create interactive prototypes to demonstrate and test user flows and interactions. This is especially useful for understanding how users will interact with the new features being developed.
+
+- **Inspect Mode:** Developers can use Figma’s inspect mode to get CSS code snippets, export assets, and understand layout measurements.
+
+### Guidelines for Using Figma
+
+- **Consistency:** Ensure that you adhere to the established design tokens and styles specified in the Figma file. This includes colors, typography, spacing, and component styles.
+
+- **Assets:** Export assets directly from Figma for use in the development. Ensure you select the correct format and resolution for web usage.
+
+- **Component Libraries:** Make use of the component libraries in Figma to maintain consistency across the entire application. Always check if a component exists before creating a new one to avoid redundancy.
+
+### Design Review
+
+- **Regular Syncs:** Hold regular design review meetings with designers and developers to ensure alignment and discuss any potential issues in translating designs into code.
+
+- **Feedback Loop:** Establish a clear feedback loop where developers can provide input on design feasibility and designers can adapt designs to meet technical requirements.
+
+### Updating Designs
+
+- **Version Control:** Figma files should be managed with version control in mind. Use Figma’s version history feature to keep track of changes and updates.
+
+- **Communication:** Communicate any changes in design promptly to the development team. Use channels like Slack or email to notify team members of updates.
+

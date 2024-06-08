@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // Imp
 import ProfileUploader from '@/components/shared/ProfileUploader'; // Update the import path as per your directory structure
 
 export default {
-  title: 'Twigstagram/shared/ProfileUploader',
+  title: 'Twigstagram/msc/ProfileUploader',
   component: ProfileUploader,
   decorators: [
     (Story) => (

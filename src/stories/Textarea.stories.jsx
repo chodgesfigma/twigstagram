@@ -6,8 +6,8 @@ export default {
   component: Textarea,
 };
 
-export const DefaultTextarea = () => <Textarea placeholder="Enter text here" />;
+export const DefaultTextareaWide = () => <Textarea placeholder="Enter text here" />;
 
-export const DisabledTextarea = () => (
+export const DisabledTextareaWide = () => (
   <Textarea placeholder="Disabled textarea" disabled />
 );

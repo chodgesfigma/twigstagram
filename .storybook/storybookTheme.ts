@@ -36,5 +36,5 @@ export default create({
   // Brand
   brandTitle: 'Twigstagram',
   brandUrl: 'https://yourcompanywebsite.com',
-  brandImage: 'https://i.ibb.co/09CK3my/name-logo.jpg', 
+  brandImage: 'https://i.ibb.co/K2T2FT4/name-logo.png', 
 });

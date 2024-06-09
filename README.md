@@ -1,4 +1,4 @@
-# ![Twigstagram Logo](public/assets/images/twigma.svg) 
+# ![Twigstagram Logo](public/assets/images/twigma.svg)   
 
 
 # Twigstagram
@@ -118,7 +118,7 @@ npx chromatic --project-token=your-chromatic-project-token
 yarn build-storybook
 npx chromatic --project-token=your-chromatic-project-token
 ```
-Visit your Chromatic project to see the published Storybook and visual tests.
+Visit your [Chromatic project](https://www.chromatic.com/library?appId=665eec829bcaf1b2947f9fca) to see the published Storybook and visual tests.
 
 ## Figma
 

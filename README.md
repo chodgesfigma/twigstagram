@@ -1,5 +1,5 @@
 export const Logo = () => (
-  <img src="/assets/images/twigma.svg" alt="Twigstagram Logo" style={{ width: '600px', margin: '20px 0' }} />
+  <img src="/assets/images/twigma.svg" alt="Twigstagram Logo"  />
 );
 
 <Logo />

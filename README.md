@@ -1,8 +1,5 @@
-export const Logo = () => (
-  <img src="/assets/images/twigma.svg" alt="Twigstagram Logo"  />
-);
+# ![Twigstagram Logo](public/assets/images/twigma.svg) 
 
-<Logo />
 
 # Twigstagram
 

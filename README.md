@@ -14,28 +14,37 @@ Twigstagram is a social media application built with React, TypeScript, and Tail
 
 ## Project Structure
 
+Twigstagram follows a modular structure with a focus on separation of concerns. Below is an overview of the project structure:
+
+```plaintext
 twigstagram/
 │
-├── public/ # Public assets
-├── src/
-│ ├── components/ # Reusable components
-│ │ ├── shared/ # Shared components
-│ │ ├── ui/ # UI components
-│ │ └── forms/ # Form components
-│ ├── context/ # Context providers
-│ ├── lib/ # Utility functions and hooks
-│ ├── pages/ # Page components
-│ ├── styles/ # Global styles
-│ ├── App.tsx # Main application component
-│ └── index.tsx # Application entry point
-├── .storybook/ # Storybook configuration
-│ ├── main.ts # Storybook main configuration
-│ ├── manager.ts # Storybook manager configuration
-│ └── preview.ts # Storybook preview configuration
-├── .env # Environment variables
-├── .gitignore # Git ignore file
-├── package.json # NPM package configuration
-└── README.md # Project documentation
+├── client/
+│   ├── public/                   # Public assets
+│   ├── src/
+│   │   ├── components/           # Reusable components
+│   │   │   ├── shared/           # Shared components
+│   │   │   ├── ui/               # UI components
+│   │   │   └── forms/            # Form components
+│   │   ├── context/              # Context providers
+│   │   ├── lib/                  # Utility functions and hooks
+│   │   ├── pages/                # Page components
+│   │   ├── styles/               # Global styles
+│   │   ├── App.js                # Main application component
+│   │   └── index.js              # Application entry point
+│   ├── .env                      # Environment variables
+│   ├── .gitignore                # Git ignore file
+│   ├── package.json              # NPM package configuration
+│   └── README.md                 # Project documentation
+├── server/
+│   ├── index.js                  # Server entry point
+│   ├── .env                      # Environment variables for server
+│   ├── .gitignore                # Git ignore file
+│   ├── package.json              # NPM package configuration for server
+│   └── README.md                 # Server documentation
+└── README.md                     # Project documentation
+
+```
 
 ## Getting Started
 
@@ -69,14 +78,14 @@ npm run dev
 ```
 
 ## Scripts
-
+```plaintext
 npm start / yarn start: Start the development server.
 npm run build / yarn build: Build the application for production.
 npm run lint / yarn lint: Run ESLint to check for linting errors.
 npm run storybook / yarn storybook: Start Storybook.
 npm run build-storybook / yarn build-storybook: Build the Storybook static site.
 npm run chromatic / yarn chromatic: Publish Storybook to Chromatic.
-
+```
 ## Storybook
 
 Storybook is used to develop and test UI components in isolation.

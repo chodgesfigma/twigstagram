@@ -1,3 +1,9 @@
+export const Logo = () => (
+  <img src="/assets/images/twigma.svg" alt="Twigstagram Logo" style={{ width: '600px', margin: '20px 0' }} />
+);
+
+<Logo />
+
 # Twigstagram
 
 Twigstagram is a social media application built with React, TypeScript, and Tailwind CSS. This project showcases various reusable components, state management with React Context, and data fetching using react-query.

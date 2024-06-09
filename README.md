@@ -79,7 +79,7 @@ npm run dev
 
 ## Scripts
 ```plaintext
-npm start / yarn start: Start the development server.
+npm run dev / yarn start: Start the development server.
 npm run build / yarn build: Build the application for production.
 npm run lint / yarn lint: Run ESLint to check for linting errors.
 npm run storybook / yarn storybook: Start Storybook.

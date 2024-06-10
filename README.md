@@ -62,8 +62,8 @@ Make sure you have the following installed:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/adrianhajdin/social_media_app.git
-   cd social_media_app
+   git clone https://github.com/ohedborg-figma/twigstagram
+   cd twigstagram
 ```
 
 2. Install dependencies:
